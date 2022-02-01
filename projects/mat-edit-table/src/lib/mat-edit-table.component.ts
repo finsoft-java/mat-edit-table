@@ -30,7 +30,8 @@ export class MatEditTableComponent<T> implements OnInit {
     save: 'Save',
     refresh: 'Refresh',
     exportXlsx: 'Export XLSX',
-    exportCsv: 'Export CSV'
+    exportCsv: 'Export CSV',
+    confirmDelete: 'Confirm?'
   };
 
   @Input()
@@ -122,7 +123,7 @@ export class MatEditTableComponent<T> implements OnInit {
         type: ''
       });
     }
-    this.columns.forEach(x => this.displayedColumns.push(x.data));
+    this.columns.forEach(x => this.displayedColumns.push(x.data || ''));
 
     if (this.pagination !== null) {
       this.dataSource.paginator = this.paginator;
@@ -207,7 +208,7 @@ export class MatEditTableComponent<T> implements OnInit {
   }
 
   renderCell(col: ColumnDefinition<T>, row: T, rowNum: number, colNum: number): string | null {
-    const x = (row as any)[col.data];
+    const x = col.data ? (row as any)[col.data] : '';
     return col.render ? col.render(x, row, rowNum, colNum) : x;
   }
 
@@ -218,10 +219,15 @@ export class MatEditTableComponent<T> implements OnInit {
   }
 
   onSearchChange(row: T, col: ColumnDefinition<T>, data: string): any {
-    (row as any)[col.data] = data;
+    if (!col.data) {
+      console.error('You are trying to set a column without .data attribute?!');
+      return;
+    }
+
+    (row as any)[col.data!] = data;
 
     /* if (data.length <= 3) {
-      // non faccio la chiamata < 3 caratteri
+      // return or not return? this is the question
       return;
     } */
 
@@ -262,11 +268,14 @@ export class MatEditTableComponent<T> implements OnInit {
     );
     this.columns.filter(col => col.type === 'combo').forEach(
       col => {
-        this.searchValue[col.data] = (row as any)[col.data];
+        if (col.data) {
+          // can it exist a combo withut .data ?!?
+          this.searchValue[col.data] = (row as any)[col.data];
+        }
       }
     );
 
-    // KNOWN BUG: il focus funziona solo in inserimento, non in update, perchè querySelectorAll() non prende le mat-select
+    // KNOWN BUG: focus works only in insert, not in update, because querySelectorAll() does not consider mat-select
     setTimeout(() => {
       const elm = this.tableFormRow.nativeElement.querySelectorAll('.tablefield:not(:disabled)');
       console.log('Selected elements:', elm);
@@ -334,24 +343,26 @@ export class MatEditTableComponent<T> implements OnInit {
   }
 
   deleteRow(rowNum: number): void {
-    // TODO dovrei dare un messaggio di conferma
-    this.buttonsEnabled = false;
-    this.editRowNumber = -1;
-    const row = this.data[rowNum];
-    this.deleteSvc?.delete(row).then(
-      () => {
-        this.data.splice(rowNum, 1);
-        this.dataSource.data = this.data;
-        console.log('Emitting delete row:', row);
-        this.delete.emit(row);
-        this.buttonsEnabled = true;
-      },
-      error => {
-        console.log('Emitting error:', error);
-        this.errorMessage.emit(error);
-        this.buttonsEnabled = true;
-      }
-    );
+    // I know, 'confirm' is bad...
+    if (confirm(this.labels.confirmDelete)) {
+      this.buttonsEnabled = false;
+      this.editRowNumber = -1;
+      const row = this.data[rowNum];
+      this.deleteSvc?.delete(row).then(
+        () => {
+          this.data.splice(rowNum, 1);
+          this.dataSource.data = this.data;
+          console.log('Emitting delete row:', row);
+          this.delete.emit(row);
+          this.buttonsEnabled = true;
+        },
+        error => {
+          console.log('Emitting error:', error);
+          this.errorMessage.emit(error);
+          this.buttonsEnabled = true;
+        }
+      );
+    }
   }
 
   getFormattazioneCondizionale(row: T): any {
