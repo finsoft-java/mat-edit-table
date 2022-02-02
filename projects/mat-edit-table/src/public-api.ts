@@ -3,6 +3,7 @@
  */
 
 export * from './lib/mat-edit-table.component';
+export * from './lib/Action';
 export * from './lib/ColumnDefinition';
 export * from './lib/MatEditTableLabels';
 export * from './lib/ListBean';

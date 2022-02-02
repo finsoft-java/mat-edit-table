@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSelectChange } from '@angular/material/select';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { MatEditTableLabels } from './MatEditTableLabels';
@@ -9,9 +10,10 @@ import { Get } from './InterfaceGet';
 import { Create } from './InterfaceCreate';
 import { Delete } from './InterfaceDelete';
 import { Update } from './InterfaceUpdate';
+import { Action } from './Action';
 
 @Component({
-  selector: 'app-mat-edit-table',
+  selector: 'mat-edit-table',
   templateUrl: './mat-edit-table.component.html',
   styleUrls: ['./mat-edit-table.component.css']
 })
@@ -63,20 +65,50 @@ export class MatEditTableComponent<T> implements OnInit {
    */
    @Input()
   deleteSvc?: Delete<T>;
+
   /**
    * Pagination type, or none
    */
   @Input()
   pagination: 'client' | 'server' | null = null;
-  @Input()
+  /**
+   * Pagination size options
+   */
+   @Input()
   pageSizeOptions: number[] = [5, 10, 20, 50];
+  /**
+   * Default pagination size
+   */
+   @Input()
+  pageSize? = 10;
 
   @Input()
   /** Timeout in secondi */
   autorefresh?: number;
 
+  /** Should button "Export XLSX" appear? */
   @Input()
-  formattazioneCondizionale?: (row: T) => any; // map of style attributes
+  xlsxExportEnabled = true;
+  /** Should button "Export CSV" appear? */
+  @Input()
+  csvExportEnabled = true;
+  /** Name of exported XLSX file */
+  @Input()
+  xlsxExportFileName = 'Export.xlsx';
+  /** Name of sheet inside exported XLSX file */
+  @Input()
+  xlsxExportSheetName = 'Data';
+  /** Name of exported CSV file */
+  @Input()
+  csvExportFileName = 'Export.csv';
+
+  /** A function returning css style for TD in Angular format, i.e. string or map */
+  @Input()
+  conditionalFormatting?: ((row: T) => any);
+
+  /** Optional argument, more buttons that have to appear on each row */
+  @Input()
+  actions: Action<T>[] = [];
 
   @Output()
   create: EventEmitter<T> = new EventEmitter();
@@ -86,17 +118,18 @@ export class MatEditTableComponent<T> implements OnInit {
   delete: EventEmitter<T> = new EventEmitter();
   @Output()
   errorMessage: EventEmitter<any> = new EventEmitter();
+  @Output()
+  clickRow: EventEmitter<T> = new EventEmitter();
 
   @ViewChild(MatPaginator, { static: true })
   paginator!: MatPaginator;
 
-  // Questi sono i parametri che si aspetta il mat-table:
+  // mat-table parameters:
   dataSource: MatTableDataSource<T> = new MatTableDataSource();
   displayedColumns: string[] = [];
 
-  // Questi sono i parametri del paginator:
+  // paginator parameters:
   paginatorLength ? = 0;
-  pageSize ? = 10;
   pageIndex ? = 0;
 
   data: T[] = [];
@@ -108,16 +141,13 @@ export class MatEditTableComponent<T> implements OnInit {
   searchValue: any = {};
 
   ACTIONS_INDEX = '$$actions';
-  XLSX_FILE_NAME = 'Export.xlsx';
-  XLSX_SHEET_NAME = 'Data';
-  CSV_FILE_NAME = 'Export.csv';
 
   @ViewChild('tableFormRow') tableFormRow: any;
 
   ngOnInit(): void {
     if (this.editable) {
       this.columns.push({
-        // Una colonna per le azioni
+        // A column for actions
         data: this.ACTIONS_INDEX,
         title: '',
         type: ''
@@ -212,9 +242,9 @@ export class MatEditTableComponent<T> implements OnInit {
     return col.render ? col.render(x, row, rowNum, colNum) : x;
   }
 
-  onChangeCell(event: Event, col: ColumnDefinition<T>): void {
-    if (col.onChangeCallback) {
-      col.onChangeCallback(event);
+  onChangeCell(event: Event | MatSelectChange, col: ColumnDefinition<T>, row: T): void {
+    if (col.onChange) {
+      col.onChange(event, col, row);
     }
   }
 
@@ -231,8 +261,8 @@ export class MatEditTableComponent<T> implements OnInit {
       return;
     } */
 
-    if (col.asyncOptions) {
-      col.asyncOptions(row).subscribe(
+    if (col.reloadOptions) {
+      col.reloadOptions(row).then(
         options => {
           console.log('Received options', options);
           col.options = options;
@@ -256,8 +286,8 @@ export class MatEditTableComponent<T> implements OnInit {
     Object.assign(this.oldRow, row);
     this.columns.forEach(
       col => {
-        if (col.asyncOptions) {
-          col.asyncOptions(row).subscribe(
+        if (col.reloadOptions) {
+          col.reloadOptions(row).then(
             options => {
               console.log('Received options', options);
               col.options = options;
@@ -365,9 +395,9 @@ export class MatEditTableComponent<T> implements OnInit {
     }
   }
 
-  getFormattazioneCondizionale(row: T): any {
-    if (this.formattazioneCondizionale) {
-      return this.formattazioneCondizionale(row);
+  getConditionalFormatting(row: T): any {
+    if (this.conditionalFormatting) {
+      return this.conditionalFormatting(row);
     }
     return null;
   }
@@ -437,8 +467,8 @@ export class MatEditTableComponent<T> implements OnInit {
     this.getReallyAll((data: T[]) => {
       const ws = this.createWorksheet(data);
       const wb: XLSX.WorkBook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, this.XLSX_SHEET_NAME);
-      XLSX.writeFile(wb, this.XLSX_FILE_NAME);
+      XLSX.utils.book_append_sheet(wb, ws, this.xlsxExportSheetName);
+      XLSX.writeFile(wb, this.xlsxExportFileName);
     });
   }
 
@@ -447,7 +477,7 @@ export class MatEditTableComponent<T> implements OnInit {
       const ws = this.createWorksheet(data);
       const csv = XLSX.utils.sheet_to_csv(ws, { FS: ';' });
       const blob = new Blob([csv], { type: 'text/csv;charset=UTF-8' });
-      saveAs(blob, this.CSV_FILE_NAME);
+      saveAs(blob, this.csvExportFileName);
     });
   }
 }
