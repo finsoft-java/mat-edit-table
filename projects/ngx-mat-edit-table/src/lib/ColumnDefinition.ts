@@ -1,7 +1,6 @@
-import { MatSelectChange } from '@angular/material/select';
 
 /**
- * An interface for 
+ * An interface for Label/Value pairs, such as SELECT OPTION's
  */
 export interface LabelValue {
   label: string;
@@ -15,8 +14,8 @@ export interface ColumnDefinition<T> {
   /** Column title */
   title: string;
 
-  /** Attribute name */
-  data?: string;
+  /** Attribute name. */
+  data: string;
 
   /** input type: text/number/date/hidden/select/... or combo(=input+select) */
   type?: string;
@@ -25,7 +24,7 @@ export interface ColumnDefinition<T> {
   width?: string;
 
   /** render function. Useful e.g. for dates or for concatenating fields */
-  render?: (data: any, row?: T, rowNum?: number, colNum?: number) => string | null;
+  render?: (data: any, row?: T, rowNum?: number) => string | null;
 
   /** select options */
   options?: LabelValue[];
@@ -37,7 +36,7 @@ export interface ColumnDefinition<T> {
   disabled?: 'NO' | 'ALWAYS' | 'UPDATE';
 
   /** onChange callback function */
-  onChange?: (event: Event | MatSelectChange, col: ColumnDefinition<T>, row: T) => void;
+  onChange?: (value: string, col: ColumnDefinition<T>, row: T) => void;
 
   /** Default value during insert */
   defaultValue?: T;

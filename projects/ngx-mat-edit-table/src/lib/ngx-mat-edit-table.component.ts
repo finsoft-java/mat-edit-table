@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
 import * as XLSX from 'xlsx';
@@ -13,16 +13,16 @@ import { Update } from './InterfaceUpdate';
 import { Action } from './Action';
 
 @Component({
-  selector: 'mat-edit-table',
-  templateUrl: './mat-edit-table.component.html',
-  styleUrls: ['./mat-edit-table.component.css']
+  selector: 'ngx-mat-edit-table',
+  templateUrl: './ngx-mat-edit-table.component.html',
+  styleUrls: ['./ngx-mat-edit-table.component.css']
 })
 /**
  * Editable Material Table
  * @see https://muhimasri.com/blogs/create-an-editable-dynamic-table-using-angular-material/
  * @param T is the type of row objects
  */
-export class MatEditTableComponent<T> implements OnInit {
+export class NgxMatEditTableComponent<T> implements OnInit {
   @Input()
   labels: MatEditTableLabels = {
     add: 'New',
@@ -124,6 +124,8 @@ export class MatEditTableComponent<T> implements OnInit {
   @ViewChild(MatPaginator, { static: true })
   paginator!: MatPaginator;
 
+  @ViewChild('tableFormRow') tableFormRow: any;
+
   // mat-table parameters:
   dataSource: MatTableDataSource<T> = new MatTableDataSource();
   displayedColumns: string[] = [];
@@ -142,7 +144,8 @@ export class MatEditTableComponent<T> implements OnInit {
 
   ACTIONS_INDEX = '$$actions';
 
-  @ViewChild('tableFormRow') tableFormRow: any;
+  constructor() { }
+  
 
   ngOnInit(): void {
     if (this.editable) {
@@ -237,14 +240,39 @@ export class MatEditTableComponent<T> implements OnInit {
     );
   }
 
-  renderCell(col: ColumnDefinition<T>, row: T, rowNum: number, colNum: number): string | null {
-    const x = col.data ? (row as any)[col.data] : '';
-    return col.render ? col.render(x, row, rowNum, colNum) : x;
+  renderCell(col: ColumnDefinition<T>, row: T, rowNum: number): string | null {
+    if (!col.data) {
+      return '';
+    }
+    const x = (row as any)[col.data];
+    if (col.render) {
+      return col.render(x, row, rowNum);
+    }
+    if (col.options) {
+      const option = col.options.find(z => z.value === x);
+      if (option) {
+        return option.label;
+      }
+    }
+    if (x == null) {
+      return '';
+    }
+    return x;
   }
 
-  onChangeCell(event: Event | MatSelectChange, col: ColumnDefinition<T>, row: T): void {
+  onChangeCell(event: Event, col: ColumnDefinition<T>, row: T): void {
+    const element = event.currentTarget as HTMLInputElement; // who knows what it is
+    const { value } = element; // object destructuring
     if (col.onChange) {
-      col.onChange(event, col, row);
+      col.onChange(value, col, row);
+      console.log('**onChangeCell**', value);
+    }
+  }
+
+  onChangeSelect(event: MatSelectChange, col: ColumnDefinition<T>, row: T): void {
+    if (col.onChange) {
+      col.onChange(event.value, col, row);
+      console.log('**onChangeSelect**', event.value);
     }
   }
 
@@ -272,7 +300,14 @@ export class MatEditTableComponent<T> implements OnInit {
   }
 
   beginCreate(): void {
-    const newRow = {} as T;
+    const newRow: any = {}; // newRow has ideally type T
+    this.columns.forEach(c => {
+      const attributeName = c.data;
+      if (attributeName) {
+        const value = (c.defaultValue !== undefined) ? c.defaultValue : null;
+        newRow[attributeName] = value;
+      }
+    });
     this.data.unshift(newRow);
     this.dataSource.data = this.data;
     this.creating = true;
@@ -443,10 +478,9 @@ export class MatEditTableComponent<T> implements OnInit {
     let rowNum = 0;
     data.forEach(row => {
       const matrixRow: any[] = [];
-      let colNum = 0;
       this.columns.forEach(col => {
         if (col.data !== this.ACTIONS_INDEX) {
-          matrixRow.push(this.renderCell(col, row, rowNum, colNum++));
+          matrixRow.push(this.renderCell(col, row, rowNum));
         }
       });
       matrix.push(matrixRow);
@@ -480,4 +514,5 @@ export class MatEditTableComponent<T> implements OnInit {
       saveAs(blob, this.csvExportFileName);
     });
   }
+
 }

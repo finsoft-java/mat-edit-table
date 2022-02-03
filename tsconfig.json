@@ -9,14 +9,14 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
-    "paths": {
-      "mat-edit-table": [
-        "dist/mat-edit-table/mat-edit-table",
-        "dist/mat-edit-table"
-      ]
-    },
     "declaration": false,
     "downlevelIteration": true,
+    "paths": {
+      "ngx-mat-edit-table": [
+        "dist/ngx-mat-edit-table/ngx-mat-edit-table",
+        "dist/ngx-mat-edit-table"
+      ]
+    },
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,

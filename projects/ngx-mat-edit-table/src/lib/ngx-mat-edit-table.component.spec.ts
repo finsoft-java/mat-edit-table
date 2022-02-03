@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MatEditTableComponent } from './mat-edit-table.component';
+import { NgxMatEditTableComponent } from './ngx-mat-edit-table.component';
 
-describe('MatEditTableComponent', () => {
-  let component: MatEditTableComponent<any>;
-  let fixture: ComponentFixture<MatEditTableComponent<any>>;
+describe('NgxMatEditTableComponent', () => {
+  let component: NgxMatEditTableComponent;
+  let fixture: ComponentFixture<NgxMatEditTableComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MatEditTableComponent ]
+      declarations: [ NgxMatEditTableComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MatEditTableComponent);
+    fixture = TestBed.createComponent(NgxMatEditTableComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

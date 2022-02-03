@@ -7,7 +7,6 @@
   
   <ng-content></ng-content>
   
-  <alert></alert>
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width:100%" id="edittable" #maintable>
       <ng-container matColumnDef="{{col.data}}" *ngFor="let col of columns">
         <th mat-header-cell *matHeaderCellDef>
@@ -21,26 +20,26 @@
                 <button mat-raised-button color="warn" [disabled]="!buttonsEnabled" [title]="labels.delete" (click)="deleteRow(rowNum)"><mat-icon>delete</mat-icon></button>
               </div>
               <span #spanHeader>
-                {{ renderCell(col, row, rowNum, -1) }}
+                {{ renderCell(col, row, rowNum) }}
               </span>
             </div>
             <div *ngIf="rowNum === editRowNumber" #tableFormRow>
               <div *ngIf="col.data === ACTIONS_INDEX; else dataField">
                   <button mat-raised-button color="primary" style="margin-right:15px;" [disabled]="!buttonsEnabled" [title]="labels.save" (click)="saveRow(rowNum)"><mat-icon>save</mat-icon></button>
                   <button mat-raised-button color="secondary" [disabled]="!buttonsEnabled" [title]="labels.undo" (click)="undoChange(rowNum);"><mat-icon>undo</mat-icon></button>
-                  <button *ngFor="let a of actions" mat-raised-button color="a.color" [disabled]="!buttonsEnabled" [title]="a.title" (click)="a.onClick()"><mat-icon>{{a.icon}}</mat-icon></button>
+                  <button *ngFor="let a of actions" mat-raised-button color="a.color" [disabled]="!buttonsEnabled" [title]="a.title" (click)="a.onClick(row)"><mat-icon>{{a.icon}}</mat-icon></button>
               </div>
               <ng-template #dataField>
                 <mat-form-field style="width: 90%; display: block; margin: 0px auto; margin-top:10px;">
                   <mat-label>{{col.title}}</mat-label>
   
-                  <input *ngIf="col.type !== 'select' && col.type !== 'combo'" matInput type="{{col.type}}" [(ngModel)]="row[col.data]" [disabled]="isDisabled(col)" (change)="onChangeCell($event, col, row)" class="tablefield"/>
+                  <input *ngIf="col.type !== 'select' && col.type !== 'combo'" matInput type="{{col.type}}" class="tablefield" [(ngModel)]="row[col.data]" [disabled]="isDisabled(col)" (change)="onChangeCell($event, col, row)"/>
                   
-                  <mat-select *ngIf="col.type === 'select'"  matInput [(ngModel)]="row[col.data]" [disabled]="isDisabled(col)" (selectionChange)="onChangeCell($event, col, row)" class="tablefield">
+                  <mat-select *ngIf="col.type === 'select'"  matInput class="tablefield" [(ngModel)]="row[col.data]" [disabled]="isDisabled(col)" (selectionChange)="onChangeSelect($event, col, row)">
                     <mat-option *ngFor="let opt of col.options" [value]="opt.value">{{ opt.label }}</mat-option>
                   </mat-select>
                   
-                  <mat-select *ngIf="col.type === 'combo'" [(ngModel)]="row[col.data]" class="tablefield" [disabled]="isDisabled(col)" (selectionChange)="onChangeCell($event, col, row)">
+                  <mat-select *ngIf="col.type === 'combo'" class="tablefield" [(ngModel)]="row[col.data]" [disabled]="isDisabled(col)" (selectionChange)="onChangeSelect($event, col, row)">
                     <mat-option>
                       <ngx-mat-select-search (input)="onSearchChange(row, col, searchValue[col.data])" [(ngModel)]="searchValue[col.data]" placeholderLabel="" noEntriesFoundLabel="No data found"></ngx-mat-select-search>
                     </mat-option>
