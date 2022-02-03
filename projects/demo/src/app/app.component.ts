@@ -15,7 +15,7 @@ export class AppComponent {
       title: 'ID',
       data: 'id',
       type: 'number',
-      disabled: 'UPDATE',
+      disabled: 'ALWAYS',
       width: '40%'
     },
     {
