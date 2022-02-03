@@ -36,8 +36,8 @@ export interface ColumnDefinition<T> {
   disabled?: 'NO' | 'ALWAYS' | 'UPDATE';
 
   /** onChange callback function */
-  onChange?: (value: string, col: ColumnDefinition<T>, row: T) => void;
+  onChange?: (value: any, col: ColumnDefinition<T>, row: T) => void;
 
   /** Default value during insert */
-  defaultValue?: T;
+  defaultValue?: any;
 }

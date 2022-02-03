@@ -31,6 +31,12 @@ export class AppComponent {
       width: '40%'
     },
     {
+      title: 'Birthday',
+      data: 'birthday',
+      type: 'date',
+      width: '30%'
+    },
+    {
       title: 'Active yet?',
       data: 'active',
       type: 'checkbox',
@@ -38,7 +44,7 @@ export class AppComponent {
     },
     {
       title: 'Size',
-      data: 'surname',
+      data: 'size',
       type: 'select',
       options: [{
         value: 'S',
@@ -55,10 +61,6 @@ export class AppComponent {
   ];
 
   constructor(public service: MockCustomerService) {
-  }
-
-  ngOnInit(): void {
-    // TODO load data
   }
 
 

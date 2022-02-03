@@ -13,7 +13,10 @@
 
   <ngx-mat-edit-table
     [columns]="columns"
-    []
+    [getSvc]="service"
+    [createSvc]="service"
+    [updateSvc]="service"
+    [deleteSvc]="service"
   >
     <!-- Here you could add some search panel -->
   </ngx-mat-edit-table>

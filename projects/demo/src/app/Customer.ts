@@ -4,7 +4,7 @@ export interface Customer {
   name: string;
   surname: string;
   age: number;
-  birthday: Date;
+  birthday: string;
   active: boolean;
   size: 'S'|'M'|'L';
 }

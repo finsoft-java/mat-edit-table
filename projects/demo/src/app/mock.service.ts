@@ -12,7 +12,7 @@ export class MockCustomerService implements Get<Customer>, Create<Customer>, Upd
       name: 'Mickey',
       surname: 'Mouse',
       age: 16,
-      birthday: new Date(),
+      birthday: '2006-02-20',
       active: true,
       size: 'S'
     }

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angu
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { MatEditTableLabels } from './MatEditTableLabels';
@@ -145,7 +146,7 @@ export class NgxMatEditTableComponent<T> implements OnInit {
   ACTIONS_INDEX = '$$actions';
 
   constructor() { }
-  
+
 
   ngOnInit(): void {
     if (this.editable) {
@@ -260,19 +261,23 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     return x;
   }
 
-  onChangeCell(event: Event, col: ColumnDefinition<T>, row: T): void {
+  onInputChange(event: Event, col: ColumnDefinition<T>, row: T): void {
     const element = event.currentTarget as HTMLInputElement; // who knows what it is
     const { value } = element; // object destructuring
     if (col.onChange) {
       col.onChange(value, col, row);
-      console.log('**onChangeCell**', value);
     }
   }
 
-  onChangeSelect(event: MatSelectChange, col: ColumnDefinition<T>, row: T): void {
+  onCheckboxChange(event: MatCheckboxChange, col: ColumnDefinition<T>, row: T): void {
+    if (col.onChange) {
+      col.onChange(event.checked, col, row);
+    }
+  }
+
+  onSelectChange(event: MatSelectChange, col: ColumnDefinition<T>, row: T): void {
     if (col.onChange) {
       col.onChange(event.value, col, row);
-      console.log('**onChangeSelect**', event.value);
     }
   }
 
