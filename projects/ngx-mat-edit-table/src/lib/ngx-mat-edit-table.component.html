@@ -30,12 +30,10 @@
                   <button *ngFor="let a of actions" mat-raised-button color="a.color" [disabled]="!buttonsEnabled" [title]="a.title" (click)="a.onClick(row)"><mat-icon>{{a.icon}}</mat-icon></button>
               </div>
               <ng-template #dataField>
-                <mat-form-field style="width: 90%; display: block; margin: 0px auto; margin-top:10px;">
+                <mat-form-field *ngIf="col.type !== 'checkbox'" style="width: 90%; display: block; margin: 0px auto; margin-top:10px;">
                   <mat-label>{{col.title}}</mat-label>
 
-                  <input *ngIf="col.type !== 'select' && col.type !== 'checkbox' && col.type !== 'combo'" matInput type="{{col.type}}" class="tablefield" [(ngModel)]="row[col.data]" [disabled]="isDisabled(col)" (change)="onInputChange($event, col, row)"/>
-
-                  <mat-checkbox *ngIf="col.type === 'checkbox'" matInput class="tablefield" [(ngModel)]="row[col.data]" [disabled]="isDisabled(col)" (change)="onCheckboxChange($event, col, row)"></mat-checkbox>
+                  <input *ngIf="col.type !== 'select' && col.type !== 'textarea' && col.type !== 'combo'" matInput type="{{col.type}}" class="tablefield" [(ngModel)]="row[col.data]" [disabled]="isDisabled(col)" (change)="onInputChange($event, col, row)"/>
 
                   <mat-select *ngIf="col.type === 'select'"  matInput class="tablefield" [(ngModel)]="row[col.data]" [disabled]="isDisabled(col)" (selectionChange)="onSelectChange($event, col, row)">
                     <mat-option *ngFor="let opt of col.options" [value]="opt.value">{{ opt.label }}</mat-option>
@@ -49,6 +47,7 @@
                   </mat-select>
 
                 </mat-form-field>
+                <mat-checkbox *ngIf="col.type === 'checkbox'" matInput class="tablefield" [(ngModel)]="row[col.data]" [disabled]="isDisabled(col)" (change)="onCheckboxChange($event, col, row)"></mat-checkbox>
               </ng-template>
             </div>
         </td>

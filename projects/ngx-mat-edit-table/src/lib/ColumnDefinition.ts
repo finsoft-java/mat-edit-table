@@ -17,7 +17,7 @@ export interface ColumnDefinition<T> {
   /** Attribute name. */
   data: string;
 
-  /** input type: text/number/date/hidden/select/... or combo(=input+select) */
+  /** input type: text/number/date/hidden/select/textarea/date/checkbox, or combo(=input+select) */
   type?: string;
 
   /** width style property. @see conditionalFormatting */
