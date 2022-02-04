@@ -1,6 +1,5 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { NgxMatEditTableComponent } from './ngx-mat-edit-table.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -20,11 +19,15 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
+import { NgxMatEditTableComponent } from './ngx-mat-edit-table.component';
+import { SafeDataUrlPipe } from './SafeDataUrlPipe';
+
 
 
 @NgModule({
   declarations: [
-    NgxMatEditTableComponent
+    NgxMatEditTableComponent,
+    SafeDataUrlPipe
   ],
   imports: [
     CommonModule, // this is needed for ngStyle

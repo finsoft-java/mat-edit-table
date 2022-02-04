@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSelectChange } from '@angular/material/select';
@@ -146,7 +147,7 @@ export class NgxMatEditTableComponent<T> implements OnInit {
 
   ACTIONS_INDEX = '$$actions';
 
-  constructor() { }
+  constructor(private sanitizer: DomSanitizer) { }
 
 
   ngOnInit(): void {
@@ -531,7 +532,7 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     const file = $event?.target.files[0];
     const reader = new FileReader();
     reader.onload = (evt) => {
-      console.log(evt);      
+      console.log(evt);
       (row as any)[col.data] = evt.target?.result;
     }
     reader.readAsDataURL(file);

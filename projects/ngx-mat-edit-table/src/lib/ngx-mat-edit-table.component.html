@@ -22,7 +22,7 @@
               <span #spanHeader *ngIf="col.type !== 'b64image' && col.type !== 'file'" [title]="cellTitle(col, row, rowNum)" [innerHTML]="renderCell(col, row, rowNum)">
               </span>
               <img *ngIf="col.type === 'b64image'"
-                [src]="row[col.data]"
+                [src]="row[col.data] | safeDataUrl"
                 [title]="cellTitle(col, row, rowNum)"
                 [ngStyle]="col.imgStyle || null"
                 />
@@ -100,7 +100,7 @@
                     accept="image/*"
                     style="display:none;"
                     (change)="readB64Image($event, col, row)"
-                  />                  
+                  />
                   <button (click)="imgFileInput.click()"
                     mat-raised-button
                     color="primary">
