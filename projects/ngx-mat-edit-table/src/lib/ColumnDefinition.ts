@@ -17,7 +17,14 @@ export interface ColumnDefinition<T> {
   /** Attribute name. */
   data: string;
 
-  /** input type: text/number/date/hidden/select/textarea/date/checkbox, or combo(=input+select) */
+  /** input type: either HTML5 input type (text/number/email/date/hidden, ...)
+   * or select/textarea/checkbox
+   * or combo(=input+select)
+   * 
+   * Default is text.
+   * 
+   * not all HTML 5 input types have been checked. "file" is not suposed to work so far.
+   */
   type?: string;
 
   /** width style property. @see conditionalFormatting */
@@ -40,4 +47,10 @@ export interface ColumnDefinition<T> {
 
   /** Default value during insert */
   defaultValue?: any;
+
+  /** Input text placeholder */
+  placeholder?: string;
+
+  /** Render function for tooltip over cell */
+  cellTitle?: (data: any, row?: T, rowNum?: number) => string | null;
 }

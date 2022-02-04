@@ -16,25 +16,25 @@ export class AppComponent {
       data: 'id',
       type: 'number',
       disabled: 'ALWAYS',
-      width: '40%'
+      width: '10%'
     },
     {
       title: 'Name',
       data: 'name',
       type: 'input',
-      width: '40%'
+      width: '20%'
     },
     {
       title: 'Surname',
       data: 'surname',
       type: 'input',
-      width: '40%'
+      width: '20%'
     },
     {
       title: 'Birthday',
       data: 'birthday',
       type: 'date',
-      width: '30%'
+      width: '10%'
     },
     {
       title: 'Active yet?',
@@ -56,8 +56,16 @@ export class AppComponent {
         value: 'L',
         label: 'Large'
       }],
-      width: '40%'
-    }
+      width: '10%'
+    },
+    {
+      title: 'Notes',
+      data: 'notes',
+      type: 'textarea',
+      width: '20%',
+      render: (x: string) => x == null ? '' : x.substring(0, 30),
+      cellTitle: (x: string) => x
+    },
   ];
 
   constructor(public service: MockCustomerService) {

@@ -4,7 +4,8 @@ export interface Customer {
   name: string;
   surname: string;
   age: number;
-  birthday: string;
+  birthday: string|null;
   active: boolean;
   size: 'S'|'M'|'L';
+  notes: string|null;
 }

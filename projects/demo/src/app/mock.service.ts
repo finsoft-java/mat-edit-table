@@ -14,7 +14,8 @@ export class MockCustomerService implements Get<Customer>, Create<Customer>, Upd
       age: 16,
       birthday: '2006-02-20',
       active: true,
-      size: 'S'
+      size: 'S',
+      notes: null
     },
     {
       id: 2,
@@ -23,16 +24,18 @@ export class MockCustomerService implements Get<Customer>, Create<Customer>, Upd
       age: 33,
       birthday: '2005-02-20',
       active: false,
-      size: 'L'
+      size: 'L',
+      notes: null
     },
     {
       id: 3,
       name: 'Mickey',
       surname: 'Mouse',
       age: 16,
-      birthday: '2006-02-20',
+      birthday: null,
       active: true,
-      size: 'S'
+      size: 'S',
+      notes: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque in lorem in enim sodales accumsan vitae ut metus. Aenean eu diam dapibus, iaculis lorem eget, fringilla tortor. Proin tincidunt, sem blandit euismod suscipit, nibh dolor aliquam orci, iaculis mattis lectus orci nec erat. Suspendisse arcu metus, gravida vel magna id, molestie molestie felis. Aenean mollis lorem sit amet congue mollis. Nulla consequat, quam non faucibus blandit, leo quam lobortis sapien, at elementum nisi enim eget quam. Fusce vulputate dolor eu quam convallis, quis molestie sapien malesuada. Vestibulum pharetra nisl et urna tincidunt feugiat. Proin risus dolor, pharetra sit amet finibus eu, suscipit quis arcu. Maecenas elementum rhoncus ligula ac scelerisque. Donec id massa commodo, euismod nibh nec, vestibulum nisi. Duis massa felis, blandit at arcu at, tempus sodales arcu.'
     },
     {
       id: 4,
@@ -41,7 +44,8 @@ export class MockCustomerService implements Get<Customer>, Create<Customer>, Upd
       age: 16,
       birthday: '2006-02-21',
       active: true,
-      size: 'L'
+      size: 'L',
+      notes: null
     }
   ];
 
