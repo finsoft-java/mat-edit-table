@@ -34,7 +34,8 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     refresh: 'Refresh',
     exportXlsx: 'Export XLSX',
     exportCsv: 'Export CSV',
-    confirmDelete: 'Confirm?'
+    confirmDelete: 'Confirm?',
+    chooseImg: 'Choose...'
   };
 
   @Input()
@@ -259,6 +260,11 @@ export class NgxMatEditTableComponent<T> implements OnInit {
       return '';
     }
     return x;
+  }
+
+  cellTitle(col: ColumnDefinition<T>, row: T, rowNum: number): string | null {
+    const x = (row as any)[col.data];
+    return col.cellTitle ? col.cellTitle(x, row, rowNum) : '';
   }
 
   onInputChange(event: Event, col: ColumnDefinition<T>, row: T): void {
@@ -520,4 +526,14 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     });
   }
 
+  readB64Image($event: any, col: ColumnDefinition<T>, row: T): void {
+    console.log($event);
+    const file = $event?.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      console.log(evt);      
+      (row as any)[col.data] = evt.target?.result;
+    }
+    reader.readAsDataURL(file);
+  }
 }

@@ -8,4 +8,5 @@ export interface Customer {
   active: boolean;
   size: 'S'|'M'|'L';
   notes: string|null;
+  petImage: string|null;
 }

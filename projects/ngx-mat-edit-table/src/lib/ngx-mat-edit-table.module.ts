@@ -19,6 +19,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatFileUploadModule } from 'angular-material-fileupload';
 
 
 
@@ -46,7 +47,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatCheckboxModule,
     MatExpansionModule,
     MatAutocompleteModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    MatFileUploadModule // Not used, yet
   ],
   exports: [
     NgxMatEditTableComponent

@@ -21,13 +21,11 @@ export class AppComponent {
     {
       title: 'Name',
       data: 'name',
-      type: 'input',
       width: '20%'
     },
     {
       title: 'Surname',
       data: 'surname',
-      type: 'input',
       width: '20%'
     },
     {
@@ -65,6 +63,13 @@ export class AppComponent {
       width: '20%',
       render: (x: string) => x == null ? '' : x.substring(0, 30),
       cellTitle: (x: string) => x
+    },
+    {
+      title: 'Pet',
+      data: 'petImage',
+      type: 'b64image',
+      imgStyle: { 'max-width': '2cm'},
+      width: '5%'
     },
   ];
 

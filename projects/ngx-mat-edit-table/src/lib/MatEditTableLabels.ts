@@ -11,5 +11,6 @@ export interface MatEditTableLabels {
     exportCsv: string;
     refresh: string;
     confirmDelete: string;
+    chooseImg: string;
 }
   

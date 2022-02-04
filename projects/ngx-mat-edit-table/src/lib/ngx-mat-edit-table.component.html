@@ -12,16 +12,24 @@
         <th mat-header-cell *matHeaderCellDef>
           {{col.title}}
         </th>
-        <td mat-cell *matCellDef="let row; let rowNum = index;" [style.width]="col.width" [ngStyle]="getConditionalFormatting(row)">
+        <td mat-cell *matCellDef="let row; let rowNum = index;" [style.width]="col.width" [ngStyle]="col.style" [ngStyle]="getConditionalFormatting(row)">
 
           <div *ngIf="rowNum !== editRowNumber">
               <div *ngIf="col.data === ACTIONS_INDEX; spanHeader" >
                 <button mat-raised-button color="primary" style="margin-right:15px;" [disabled]="!buttonsEnabled" [title]="labels.edit" (click)="beginEdit(rowNum)"><mat-icon>edit</mat-icon></button>
                 <button mat-raised-button color="warn" [disabled]="!buttonsEnabled" [title]="labels.delete" (click)="deleteRow(rowNum)"><mat-icon>delete</mat-icon></button>
               </div>
-              <span #spanHeader [title]="col.cellTitle ? col.cellTitle(col, row, rowNum) : ''">
-                {{ renderCell(col, row, rowNum) }}
+              <span #spanHeader *ngIf="col.type !== 'b64image' && col.type !== 'file'" [title]="cellTitle(col, row, rowNum)" [innerHTML]="renderCell(col, row, rowNum)">
               </span>
+              <img *ngIf="col.type === 'b64image'"
+                [src]="row[col.data]"
+                [title]="cellTitle(col, row, rowNum)"
+                [ngStyle]="col.imgStyle || null"
+                />
+              <button *ngIf="col.type === 'file'"
+                [title]="cellTitle(col, row, rowNum)"
+                mat-raised-button color="primary"
+              >Download (NOT WORKING YET)</button>
             </div>
             <div *ngIf="rowNum === editRowNumber" #tableFormRow>
               <div *ngIf="col.data === ACTIONS_INDEX; else dataField">
@@ -30,7 +38,7 @@
                   <button *ngFor="let a of actions" mat-raised-button color="a.color" [disabled]="!buttonsEnabled" [title]="a.title" (click)="a.onClick(row)"><mat-icon>{{a.icon}}</mat-icon></button>
               </div>
               <ng-template #dataField>
-                <mat-form-field *ngIf="col.type !== 'checkbox'" style="width: 90%; display: block; margin: 0px auto; margin-top:10px;">
+                <mat-form-field *ngIf="col.type !== 'checkbox' && col.type !== 'file' && col.type !== 'b64image'" style="width: 90%; display: block; margin: 0px auto; margin-top:10px;">
                   <mat-label>{{col.title}}</mat-label>
 
                   <input *ngIf="col.type !== 'select' && col.type !== 'textarea' && col.type !== 'combo'"
@@ -85,6 +93,22 @@
                   [disabled]="isDisabled(col)"
                   (change)="onCheckboxChange($event, col, row)"
                 ></mat-checkbox>
+
+                <span *ngIf="col.type === 'b64image'">
+                  <input #imgFileInput
+                    type="file"
+                    accept="image/*"
+                    style="display:none;"
+                    (change)="readB64Image($event, col, row)"
+                  />                  
+                  <button (click)="imgFileInput.click()"
+                    mat-raised-button
+                    color="primary">
+                    {{ labels.chooseImg }}
+                  </button>
+                </span>
+
+                <span *ngIf="col.type === 'file'">Edit not supported (so far)</span>
               </ng-template>
             </div>
         </td>

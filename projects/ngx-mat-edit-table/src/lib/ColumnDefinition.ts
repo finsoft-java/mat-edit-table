@@ -20,17 +20,29 @@ export interface ColumnDefinition<T> {
   /** input type: either HTML5 input type (text/number/email/date/hidden, ...)
    * or select/textarea/checkbox
    * or combo(=input+select)
+   * or b64image(=img+file, expected as b64 string)
    * 
    * Default is text.
    * 
-   * not all HTML 5 input types have been checked. "file" is not suposed to work so far.
+   * Not all HTML 5 input types have been tested. "file" is not suposed to work so far.
    */
   type?: string;
 
-  /** width style property. @see conditionalFormatting */
+  /** 
+   * Cell width style property.
+   */
   width?: string;
 
-  /** render function. Useful e.g. for dates or for concatenating fields */
+  /**
+   * ngStyle property. It can be a string or a map.
+   * @see also NgxMatEditTableComponent.conditionalFormatting
+  */
+  style?: any;
+
+  /**
+   * Render function. Useful e.g. for dates or for concatenating fields
+   * You can render HTML code as well, e.g. render some image instead of state strings
+   */
   render?: (data: any, row?: T, rowNum?: number) => string | null;
 
   /** select options */
@@ -53,4 +65,9 @@ export interface ColumnDefinition<T> {
 
   /** Render function for tooltip over cell */
   cellTitle?: (data: any, row?: T, rowNum?: number) => string | null;
+
+  /** 
+   * Image ngStyle property. Consider setting max-width / max-height.
+   */
+  imgStyle?: { [klass: string]: any};
 }
