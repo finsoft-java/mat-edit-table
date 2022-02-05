@@ -27,7 +27,7 @@
               "projects/demo/src/assets"
             ],
             "styles": [
-              "projects/demo/src/styles.css"
+              "projects/demo/src/styles.scss"
             ],
             "scripts": []
           },
@@ -90,7 +90,7 @@
               "projects/demo/src/assets"
             ],
             "styles": [
-              "projects/demo/src/styles.css"
+              "projects/demo/src/styles.scss"
             ],
             "scripts": []
           }
@@ -161,6 +161,11 @@
           }
         }
       }
+    }
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
     }
   },
   "defaultProject": "demo"

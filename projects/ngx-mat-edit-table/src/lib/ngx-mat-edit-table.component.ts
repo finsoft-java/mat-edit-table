@@ -17,7 +17,7 @@ import { Action } from './Action';
 @Component({
   selector: 'ngx-mat-edit-table',
   templateUrl: './ngx-mat-edit-table.component.html',
-  styleUrls: ['./ngx-mat-edit-table.component.css']
+  styleUrls: ['./ngx-mat-edit-table.component.scss']
 })
 /**
  * Editable Material Table
