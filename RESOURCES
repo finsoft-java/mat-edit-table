@@ -3,3 +3,5 @@ Resources used while building this module:
 * https://angular.io/guide/creating-libraries
 * https://javascript.plainenglish.io/step-by-step-guide-to-upgrade-your-angular-app-from-css-to-scss-fb347330fe28
 * https://material.angular.io/guide/theming-your-components
+* https://nodejs.org/es/blog/npm/peer-dependencies/
+* https://stackoverflow.com/a/67850942/5116356

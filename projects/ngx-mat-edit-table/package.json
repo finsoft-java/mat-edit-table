@@ -7,8 +7,9 @@
     "@angular/forms": "~11.2.7",
     "@angular/material": "~11.2.13",
     "@angular/material-moment-adapter": "~11.2.2",
-    "ngx-mat-select-search": "^3.2.0",
     "file-saver": "^2.0.5",
+    "ngx-mat-select-search": "^3.2.0",
+    "moment": "^2.29.1",
     "xlsx": "^0.18.0"
   },
   "dependencies": {
