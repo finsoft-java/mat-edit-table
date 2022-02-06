@@ -87,7 +87,6 @@
 
                 </mat-form-field>
                 <mat-checkbox *ngIf="col.type === 'checkbox'"
-                  matInput
                   class="tablefield"
                   [(ngModel)]="row[col.data]"
                   [disabled]="isDisabled(col)"

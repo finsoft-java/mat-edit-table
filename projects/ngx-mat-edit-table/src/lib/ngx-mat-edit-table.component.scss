@@ -5,6 +5,26 @@
 // $candy-app-primary: mat-palette($mat-indigo);
 // $candy-app-accent:  mat-palette($mat-pink, A200, A100, A400);
 
+/*@import '~@angular/material/prebuilt-themes/indigo-pink.css'; */
+
+// by default, input width is stuck at 180px
+::ng-deep .mat-form-field-infix {
+    width: auto !important;
+}
+
+// why do I see transparent mat-select options ?!?
+::ng-deep .mat-select-panel {
+    background: #fff;
+  }
+  
+::ng-deep .mat-select-panel:not([class*=mat-elevation-z]) {
+   box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12);
+}
+
+// checkboxes are not working too
+
+
+
 
 /*
 This is for Angular 12:
