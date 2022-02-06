@@ -12,5 +12,6 @@ export interface MatEditTableLabels {
     refresh: string;
     confirmDelete: string;
     chooseImg: string;
+    chooseFile: string;
 }
   

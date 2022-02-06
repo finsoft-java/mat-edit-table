@@ -49,6 +49,10 @@
                     [disabled]="isDisabled(col)"
                     [placeholder]="col.placeholder || ''"
                     (change)="onInputChange($event, col, row)"
+                    [maxLength]="col.maxLenght || null"
+                    [max]="col.max"
+                    [min]="col.min"
+                    [pattern]="col.pattern || ''"
                   />
 
                   <mat-select *ngIf="col.type === 'select'"
@@ -57,6 +61,7 @@
                     [(ngModel)]="row[col.data]"
                     [disabled]="isDisabled(col)"
                     [placeholder]="col.placeholder || ''"
+                    [multiple]="col.multiple"
                     (selectionChange)="onSelectChange($event, col, row)"
                   >
                     <mat-option *ngFor="let opt of col.options" [value]="opt.value">{{ opt.label }}</mat-option>
@@ -67,6 +72,7 @@
                     [(ngModel)]="row[col.data]"
                     [disabled]="isDisabled(col)"
                     [placeholder]="col.placeholder || ''"
+                    [multiple]="col.multiple"
                     (selectionChange)="onSelectChange($event, col, row)"
                   >
                     <mat-option>
@@ -107,7 +113,21 @@
                   </button>
                 </span>
 
-                <span *ngIf="col.type === 'file'">Edit not supported (so far)</span>
+                <span *ngIf="col.type === 'file'">
+                  <input #fileInput
+                    type="file"
+                    [accept]="col.accept"
+                    [multiple]="col.multiple"
+                    style="display:none;"
+                    (change)="uploadFile($event, col, row)"
+                  />
+                  <button (click)="fileInput.click()"
+                    mat-raised-button
+                    color="primary">
+                    {{ labels.chooseFile }}
+                 </button>
+                  Edit not supported (so far)
+                </span>
               </ng-template>
             </div>
         </td>

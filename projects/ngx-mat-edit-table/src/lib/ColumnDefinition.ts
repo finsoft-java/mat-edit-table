@@ -51,11 +51,11 @@ export interface ColumnDefinition<T> {
   /** Function to re/load options in a combo during search */
   reloadOptions?: (row?: T) => Promise<LabelValue[]>;
 
-  /** Select "multiple" attribute. undefined is intended as false. */
+  /** Select or File "multiple" attribute. undefined is intended as false. */
   multiple?: boolean;
 
   /** Input "maxlength" attribute */
-  maxlenght?: number;
+  maxLenght?: number;
 
   /** Input "max" attribute */
   max?: number;
@@ -85,4 +85,7 @@ export interface ColumnDefinition<T> {
    * Image ngStyle property. Consider setting max-width / max-height.
    */
   imgStyle?: { [klass: string]: any};
+
+  /** File "accept" property */
+  accept?: string;
 }

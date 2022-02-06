@@ -36,7 +36,8 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     exportXlsx: 'Export XLSX',
     exportCsv: 'Export CSV',
     confirmDelete: 'Confirm?',
-    chooseImg: 'Choose...'
+    chooseImg: 'Choose...',
+    chooseFile: 'Choose...'
   };
 
   @Input()
@@ -536,5 +537,9 @@ export class NgxMatEditTableComponent<T> implements OnInit {
       (row as any)[col.data] = evt.target?.result;
     }
     reader.readAsDataURL(file);
+  }
+
+  uploadFile($event: any, col: ColumnDefinition<T>, row: T): void {
+    console.error('Not implemented (yet)');
   }
 }
