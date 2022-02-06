@@ -10,7 +10,4 @@ export * from './lib/ColumnDefinition';
 export * from './lib/MatEditTableLabels';
 export * from './lib/ListBean';
 export * from './lib/ValueBean';
-export * from './lib/InterfaceCreate';
-export * from './lib/InterfaceUpdate';
-export * from './lib/InterfaceDelete';
-export * from './lib/InterfaceGet';
+export * from './lib/ServiceInterface';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ListBean, Create, Get, Update, Delete } from 'ngx-mat-edit-table';
+import { ListBean, ServiceInterface } from 'ngx-mat-edit-table';
 import { Customer } from './Customer';
 
 @Injectable({ providedIn: 'root' })
@@ -7,7 +7,7 @@ import { Customer } from './Customer';
  * This mock service simulates a backend service. Here there is no webservice,
  * we just keep all objects inside an "internalList".
  */
-export class MockCustomerService implements Get<Customer>, Create<Customer>, Update<Customer>, Delete<Customer> {
+export class MockCustomerService implements ServiceInterface {
   constructor() { }
 
   internalList: Customer[] = [

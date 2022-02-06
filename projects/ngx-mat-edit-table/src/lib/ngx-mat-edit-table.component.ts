@@ -8,10 +8,7 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { MatEditTableLabels } from './MatEditTableLabels';
 import { ColumnDefinition } from './ColumnDefinition';
-import { Get } from './InterfaceGet';
-import { Create } from './InterfaceCreate';
-import { Delete } from './InterfaceDelete';
-import { Update } from './InterfaceUpdate';
+import { ServiceInterface } from './ServiceInterface';
 import { Action } from './Action';
 
 @Component({
@@ -50,25 +47,10 @@ export class NgxMatEditTableComponent<T> implements OnInit {
   editable = true;
 
   /**
-   * GET webservice promise
+   * GET/POST/PUT/DELETE webservices promises
    */
   @Input()
-  getSvc?: Get<T>;
-  /**
-   * POST webservice promise
-   */
-   @Input()
-  createSvc?: Create<T>;
-  /**
-   * PUT webservice promise
-   */
-   @Input()
-  updateSvc?: Update<T>;
-  /**
-   * DELETE webservice promise
-   */
-   @Input()
-  deleteSvc?: Delete<T>;
+  service?: ServiceInterface<T>;
 
   /**
    * Pagination type, or none
@@ -207,7 +189,7 @@ export class NgxMatEditTableComponent<T> implements OnInit {
       this.filtro.skip = this.pageIndex && this.pageSize && this.pageIndex * this.pageSize;
       this.filtro.top = this.pageSize;
     }
-    this.getSvc?.getAll(this.filtro).then(
+    this.service?.getAll(this.filtro).then(
       listBean => {
         this.dataSource.data = listBean.data;
         this.data = listBean.data;
@@ -232,7 +214,7 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     const filtroSenzaPaginazione = { ...this.filtro };
     delete filtroSenzaPaginazione.skip;
     delete filtroSenzaPaginazione.top;
-    return this.getSvc?.getAll(filtroSenzaPaginazione).then(
+    return this.service?.getAll(filtroSenzaPaginazione).then(
       listBean => {
         callback(listBean.data);
       },
@@ -381,7 +363,7 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     const row = this.data[rowNum];
     console.log(this);
 
-    this.createSvc?.create(row).then(
+    this.service?.create?(row).then(
       response => {
         console.log('Emitting create row:', row);
         this.create.emit(row);
@@ -404,7 +386,7 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     this.editRowNumber = -1;
     const row = this.data[rowNum];
     console.log(this);
-    this.updateSvc?.update(row).then(
+    this.service?.update?(row).then(
       response => {
         console.log('Emitting update row:', row);
         this.update.emit(row);
@@ -426,7 +408,7 @@ export class NgxMatEditTableComponent<T> implements OnInit {
       this.buttonsEnabled = false;
       this.editRowNumber = -1;
       const row = this.data[rowNum];
-      this.deleteSvc?.delete(row).then(
+      this.service?.delete?(row).then(
         () => {
           this.data.splice(rowNum, 1);
           this.dataSource.data = this.data;
