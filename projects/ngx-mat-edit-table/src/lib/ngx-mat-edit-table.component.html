@@ -49,7 +49,7 @@
                     [disabled]="isDisabled(col)"
                     [placeholder]="col.placeholder || ''"
                     (change)="onInputChange($event, col, row)"
-                    [maxLength]="col.maxLenght || null"
+                    [maxLength]="!col.maxLenght ? -1 : col.maxLenght"
                     [max]="col.max"
                     [min]="col.min"
                     [pattern]="col.pattern || ''"
@@ -88,6 +88,7 @@
                     [(ngModel)]="row[col.data]"
                     [disabled]="isDisabled(col)"
                     [placeholder]="col.placeholder || ''"
+                    [maxLength]="!col.maxLenght ? -1 : col.maxLenght"
                     (change)="onInputChange($event, col, row)"
                   ></textarea>
 

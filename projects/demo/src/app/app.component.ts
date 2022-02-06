@@ -21,7 +21,8 @@ export class AppComponent {
     {
       title: 'Name',
       data: 'name',
-      width: '20%'
+      width: '20%',
+      maxLenght: 10
     },
     {
       title: 'Surname',
@@ -69,7 +70,17 @@ export class AppComponent {
       data: 'petImage',
       type: 'b64image',
       imgStyle: { 'max-width': '2cm'},
-      width: '5%'
+    },
+    {
+      title: 'Best Friend',
+      data: '_bfname',
+      type: 'input',
+      render: (x, c) => c?.bestFriend?.name || '',
+      onChange: (x, col, c) => {
+        // this is an idea about accessing inner properties
+        if (!c.bestFriend) (c.bestFriend as any) = {};
+        c.bestFriend!.name = (c as any)._bfname;
+      },
     },
   ];
 
