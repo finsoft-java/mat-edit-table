@@ -34,10 +34,10 @@ export interface ColumnDefinition<T> {
   width?: string;
 
   /**
-   * ngStyle property. It can be a string or a map.
+   * TD ngStyle property.
    * @see also NgxMatEditTableComponent.conditionalFormatting
   */
-  style?: any;
+  style?: { [klass: string]: any};
 
   /**
    * Render function. Useful e.g. for dates or for concatenating fields
@@ -50,6 +50,21 @@ export interface ColumnDefinition<T> {
 
   /** Function to re/load options in a combo during search */
   reloadOptions?: (row?: T) => Promise<LabelValue[]>;
+
+  /** Select "multiple" attribute. undefined is intended as false. */
+  multiple?: boolean;
+
+  /** Input "maxlength" attribute */
+  maxlenght?: number;
+
+  /** Input "max" attribute */
+  max?: number;
+
+  /** Input "min" attribute */
+  min?: number;
+
+  /** Input "pattern" attribute */
+  pattern?: string;
 
   /** If the filed is enabled or disabled furing create or update*/
   disabled?: 'NO' | 'ALWAYS' | 'UPDATE';
