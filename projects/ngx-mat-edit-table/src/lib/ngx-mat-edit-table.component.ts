@@ -433,10 +433,13 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     }
   }
 
-  cloneRow(row: T): void {
+  cloneRow(row: T, rowNum: number): void {
     // cfr. beginCreate()
+    // TODO: put new line at rowNum, not at 0
     
     const newRow = { ...row };
+    console.log("row=", row, " newrow=", newRow);
+
     this.data.unshift(newRow);
     this.dataSource.data = this.data;
     this.creating = true;
