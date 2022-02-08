@@ -29,6 +29,7 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     undo: 'Undo',
     delete: 'Delete',
     save: 'Save',
+    clone: 'Clone',
     refresh: 'Refresh',
     exportXlsx: 'Export XLSX',
     exportCsv: 'Export CSV',
@@ -73,6 +74,10 @@ export class NgxMatEditTableComponent<T> implements OnInit {
   @Input()
   /** Timeout in secondi */
   autorefresh?: number;
+
+  /** Should button "Clone" appear? */
+  @Input()
+  cloneable = false;
 
   /** Should button "Export XLSX" appear? */
   @Input()
@@ -426,6 +431,16 @@ export class NgxMatEditTableComponent<T> implements OnInit {
         }
       );
     }
+  }
+
+  cloneRow(row: T): void {
+    // cfr. beginCreate()
+    
+    const newRow = { ...row };
+    this.data.unshift(newRow);
+    this.dataSource.data = this.data;
+    this.creating = true;
+    this.beginEdit(0);
   }
 
   getConditionalFormatting(row: T): any {

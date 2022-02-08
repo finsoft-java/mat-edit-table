@@ -7,6 +7,7 @@ export interface MatEditTableLabels {
     undo: string;
     save: string;
     delete: string;
+    clone: string;
     exportXlsx: string;
     exportCsv: string;
     refresh: string;
