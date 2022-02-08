@@ -22,7 +22,7 @@ export class AppComponent {
       title: 'Name',
       data: 'name',
       width: '20%',
-      maxLenght: 10
+      maxLength: 10
     },
     {
       title: 'Surname',

@@ -363,7 +363,7 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     const row = this.data[rowNum];
     console.log(this);
 
-    this.service?.create?(row).then(
+    this.service?.create!(row).then(
       response => {
         console.log('Emitting create row:', row);
         this.create.emit(row);
@@ -386,7 +386,7 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     this.editRowNumber = -1;
     const row = this.data[rowNum];
     console.log(this);
-    this.service?.update?(row).then(
+    this.service?.update!(row).then(
       response => {
         console.log('Emitting update row:', row);
         this.update.emit(row);
@@ -408,7 +408,8 @@ export class NgxMatEditTableComponent<T> implements OnInit {
       this.buttonsEnabled = false;
       this.editRowNumber = -1;
       const row = this.data[rowNum];
-      this.service?.delete?(row).then(
+
+      this.service?.delete!(row).then(
         () => {
           this.data.splice(rowNum, 1);
           this.dataSource.data = this.data;
