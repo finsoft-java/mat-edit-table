@@ -4,8 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build ngx-mat-edit-table",
+    "build": "ng build ngx-mat-edit-table --configuration production",
     "package": "npm run build && cd dist/ngx-mat-edit-table && npm pack",
+    "publish": "cd dist/ngx-mat-edit-table && npm publish",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
