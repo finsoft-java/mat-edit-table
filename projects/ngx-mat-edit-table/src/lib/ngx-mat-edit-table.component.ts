@@ -34,7 +34,9 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     exportCsv: 'Export CSV',
     confirmDelete: 'Confirm?',
     chooseImg: 'Choose...',
-    chooseFile: 'Choose...'
+    chooseFile: 'Choose...',
+    downloadFile: 'Download',
+    deleteFile: 'Clear'
   };
 
   @Input()
@@ -522,7 +524,30 @@ export class NgxMatEditTableComponent<T> implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  uploadFile($event: any, col: ColumnDefinition<T>, row: T): void {
-    console.error('Not implemented (yet)');
+  fileUpload($event: any, col: ColumnDefinition<T>, row: T) {
+    // ($event?.target) ? col.fileUpload(($event?.target as any).files, row) : return
+    if (col.fileUpload && $event?.target?.files) {
+      const files: FileList = $event?.target?.files;
+      col.fileUpload(files, row);
+    }
+  }
+
+  fileDownload(col: ColumnDefinition<T>, row: T) {
+    if (col.fileDownload) {
+      col.fileDownload(row).then(([data, filename]) => this.downloadFileBlob(data, filename));
+    }
+  }
+  
+  /**
+   * Create a Blob with given data, and force the browser to "download"
+   * it as a separate attachment, with given filename
+   */
+  downloadFileBlob(data: any, filename: string) {
+      const blob = new Blob([data]);
+      const url = window.URL.createObjectURL(blob);
+      var anchor = document.createElement("a");
+      anchor.download = filename;
+      anchor.href = url;
+      anchor.click();
   }
 }

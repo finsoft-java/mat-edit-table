@@ -55,7 +55,7 @@ export interface ColumnDefinition<T> {
   multiple?: boolean;
 
   /** Input "maxlength" attribute */
-  maxLenght?: number;
+  maxLength?: number;
 
   /** Input "max" attribute */
   max?: number;
@@ -88,4 +88,14 @@ export interface ColumnDefinition<T> {
 
   /** File "accept" property */
   accept?: string;
+
+  /** File/s upload function */
+  fileUpload?: (files: FileList, row: T) => void;
+
+  /** File/s download function. Must return both file content and filename */
+  fileDownload?: (row: T) => Promise<[any, string]>;
+
+  /** File/s delete function */
+  fileDelete?: (row: T) => void;
+
 }

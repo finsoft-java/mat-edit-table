@@ -13,5 +13,7 @@ export interface MatEditTableLabels {
     confirmDelete: string;
     chooseImg: string;
     chooseFile: string;
+    downloadFile: string;
+    deleteFile: string;
 }
   

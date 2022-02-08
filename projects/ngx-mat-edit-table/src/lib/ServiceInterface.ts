@@ -31,6 +31,4 @@ export interface ServiceInterface<T> {
      * A service implementing deletion of given row (probably a DELETE to a webservice)
      */
     delete?(object: T): Promise<any>;
-
-    // TODO: upload, download
 }

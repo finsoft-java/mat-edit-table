@@ -26,10 +26,11 @@
                 [title]="cellTitle(col, row, rowNum)"
                 [ngStyle]="col.imgStyle || null"
                 />
-              <button *ngIf="col.type === 'file'"
+              <button *ngIf="col.type === 'file' && col.fileDownload"
                 [title]="cellTitle(col, row, rowNum)"
                 mat-raised-button color="primary"
-              >Download (NOT WORKING YET)</button>
+                (click)="fileDownload(col, row)"
+              >{{ labels.downloadFile }}</button>
             </div>
             <div *ngIf="rowNum === editRowNumber" #tableFormRow>
               <div *ngIf="col.data === ACTIONS_INDEX; else dataField">
@@ -49,7 +50,7 @@
                     [disabled]="isDisabled(col)"
                     [placeholder]="col.placeholder || ''"
                     (change)="onInputChange($event, col, row)"
-                    [maxLength]="!col.maxLenght ? -1 : col.maxLenght"
+                    [maxLength]="!col.maxLength ? -1 : col.maxLength"
                     [max]="col.max"
                     [min]="col.min"
                     [pattern]="col.pattern || ''"
@@ -88,7 +89,7 @@
                     [(ngModel)]="row[col.data]"
                     [disabled]="isDisabled(col)"
                     [placeholder]="col.placeholder || ''"
-                    [maxLength]="!col.maxLenght ? -1 : col.maxLenght"
+                    [maxLength]="!col.maxLength ? -1 : col.maxLength"
                     (change)="onInputChange($event, col, row)"
                   ></textarea>
 
@@ -115,19 +116,27 @@
                 </span>
 
                 <span *ngIf="col.type === 'file'">
-                  <input #fileInput
-                    type="file"
-                    [accept]="col.accept"
-                    [multiple]="col.multiple"
-                    style="display:none;"
-                    (change)="uploadFile($event, col, row)"
-                  />
-                  <button (click)="fileInput.click()"
+                  <span *ngIf="col.fileUpload">
+                    <input #fileInput
+                      type="file"
+                      [accept]="col.accept"
+                      [multiple]="col.multiple"
+                      style="display:none;"
+                      (change)="fileUpload($event, col, row)"
+                    />
+                    <button
+                      (click)="fileInput.click()"
+                      mat-raised-button
+                      color="primary">
+                      {{ labels.chooseFile }}
+                    </button>
+                  </span>
+                  <button *ngIf="col.fileDelete"
+                    (click)="col.fileDelete(row)"
                     mat-raised-button
-                    color="primary">
-                    {{ labels.chooseFile }}
+                    color="warn">
+                    {{ labels.deleteFile }}
                  </button>
-                  Edit not supported (so far)
                 </span>
               </ng-template>
             </div>

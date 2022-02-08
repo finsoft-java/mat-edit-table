@@ -7,7 +7,7 @@ import { Customer } from './Customer';
  * This mock service simulates a backend service. Here there is no webservice,
  * we just keep all objects inside an "internalList".
  */
-export class MockCustomerService implements ServiceInterface {
+export class MockCustomerService implements ServiceInterface<Customer> {
   constructor() { }
 
   internalList: Customer[] = [
