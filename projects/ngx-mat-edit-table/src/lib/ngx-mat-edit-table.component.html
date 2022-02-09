@@ -18,7 +18,7 @@
               <div *ngIf="col.data === ACTIONS_INDEX; spanHeader" >
                 <button *ngIf="service?.update" mat-raised-button color="primary" style="margin-right:15px;" [disabled]="!buttonsEnabled" [title]="labels.edit" (click)="beginEdit(rowNum)"><mat-icon>edit</mat-icon></button>
                 <button *ngIf="service?.delete" mat-raised-button color="warn" [disabled]="!buttonsEnabled" [title]="labels.delete" (click)="deleteRow(rowNum)"><mat-icon>delete</mat-icon></button>
-                <button *ngIf="cloneable" mat-raised-button color="primary" [disabled]="!buttonsEnabled" [title]="labels.clone" (click)="cloneRow(row, rowNum)"><mat-icon>clone</mat-icon></button>
+                <button *ngIf="cloneable" mat-raised-button color="primary" [disabled]="!buttonsEnabled" [title]="labels.clone" (click)="cloneRow(row, rowNum)"><mat-icon>content_copy</mat-icon></button>
               </div>
               <span #spanHeader *ngIf="col.type !== 'b64image' && col.type !== 'file'" [title]="cellTitle(col, row, rowNum)" [innerHTML]="renderCell(col, row, rowNum)">
               </span>
